@@ -17,13 +17,14 @@ module.exports = {
 		].join("\n");
 		
 		db.query(cypher, {}, function(err, results){
-			results = results || [];
+			if (err) next(err);
 			async.each(results, function(node, f){
 				var emp = node.n.data;
 				emp.id = node.n.id;
 				swig.employees.push(emp);
 				f();
 			}, function(err){
+				if (err) next(err);
 				res.render('dashboard.html', swig);
 			});
 		});
@@ -32,6 +33,7 @@ module.exports = {
 	create: function(req, res, next) {
 		var employee = db.createNode({name: req.body.name, job: req.body.job, lunchAndLearn: true});
 		employee.save(function(err, n){
+			if (err) next(err);
 			var swig = {
 				title: "Add Employee",
 				scripts: ["/scripts/add.js"],
@@ -58,6 +60,7 @@ module.exports = {
 		}
 		if (req.params.id) {
 			db.getNodeById(req.params.id, function(err, node){
+				if (err) next(err);
 				var emp = node.data;
 				emp.id = node.id;
 				swig.employee = emp;
@@ -75,9 +78,11 @@ module.exports = {
 			async.each(Object.keys(data), function(prop, f){
 				if (req.body[prop]) data[prop] = req.body[prop];
 				node.save(function(err, n){
+					if (err) next(err);
 					f();
 				});
 			}, function(err){
+				if (err) next(err);
 				var swig = {
 					title: "View Employee",
 					active: "view",
@@ -98,15 +103,17 @@ module.exports = {
 		var employees = [];
 		
 		db.query(cypher, {}, function(err, results){
+			if (err) next(err);
 			async.each(results, function(node, f){
 				var emp = node.n.data;
 				emp.id = node.n.id;
 				employees.push(emp);
 				f();
 			}, function(err){
+				if (err) next(err);
 				res.send(200, employees);
 			});
-		})
+		});
 	}
 	
 }
