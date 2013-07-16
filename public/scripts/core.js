@@ -2,6 +2,7 @@
 	
 	// Setup vars
 	var History = window.History,
+		current = 0,
 		highest = 0;
 	
 	// Make sure the browser is compatible with History API	
@@ -32,8 +33,11 @@
 		 * based on the history id, when loading 'new' pages. 
 		 */
 		$(window).bind('statechange', function(e){
+			var dir = 'left';
 			var data = History.getState().data;
-			render(data);
+			if (data.id < current) dir = 'right';
+			current = data.id;
+			render(data, {direction: dir});
 		});
 		
 		/*
@@ -74,32 +78,33 @@
 		/*
 		 * Render a template returned by the server.
 		 */
-		var render = aptronym.render = function (data) {
+		var render = aptronym.render = function (data, opts) {
 			// First, hide the existing template
-			$('#main-inner').hide();
-			// jQueryify the new template
-			var template = $(data.template);
-			// Find the content we want to display. Sometimes the entirety of the template
-			// is the #main-inner div, but if it's not, we select only that
-			var inner = template.attr('id') == "main-inner" ? template : template.find("#main-inner");
-			// Hide that div so we can transition it in
-			inner.hide();
-			// Remove the existing template
-			$('#main').empty().append(inner);
-			// Fade in the new template
-			$("#main-inner").fadeIn(600, function(){
-				// Important to do this here as a callback, otherwise,
-				// the content isn't ready when all the events are bound
-				// by the script
-				if (data.swig.scripts) {
-					$.each(data.swig.scripts, function(i, s){
-						$.getScript(s);
-					});
-				}
+			$('#main-inner').hide('drop', opts, 'slow', function(){
+				// jQueryify the new template
+				var template = $(data.template);
+				// Find the content we want to display. Sometimes the entirety of the template
+				// is the #main-inner div, but if it's not, we select only that
+				var inner = template.attr('id') == "main-inner" ? template : template.find("#main-inner");
+				// Hide that div so we can transition it in
+				inner.hide();
+				// Remove the existing template
+				$('#main').empty().append(inner);
+				// Fade in the new template
+				$("#main-inner").fadeIn(600, function(){
+					// Important to do this here as a callback, otherwise,
+					// the content isn't ready when all the events are bound
+					// by the script
+					if (data.swig.scripts) {
+						$.each(data.swig.scripts, function(i, s){
+							$.getScript(s);
+						});
+					}
+				});
+				// Update the top navigation
+				if ($("#top-nav ul li.active").length) $("#top-nav ul li.active").removeClass("active");
+				$("#nav-" + data.swig.active).addClass("active");
 			});
-			// Update the top navigation
-			if ($("#top-nav ul li.active").length) $("#top-nav ul li.active").removeClass("active");
-			$("#nav-" + data.swig.active).addClass("active");
 		};
 		
 		/*
