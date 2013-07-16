@@ -80,7 +80,7 @@
 		 */
 		var render = aptronym.render = function (data, opts) {
 			// First, hide the existing template
-			$('#main-inner').hide('blind', opts, 1000, function(){
+			$('#main-inner').hide('explode', {}, 1000, function(){
 				// jQueryify the new template
 				var template = $(data.template);
 				// Find the content we want to display. Sometimes the entirety of the template
@@ -91,7 +91,7 @@
 				// Remove the existing template
 				$('#main').empty().append(inner);
 				// Fade in the new template
-				$("#main-inner").fadeIn(600, function(){
+				$("#main-inner").show('explode', {}, 600, function(){
 					// Important to do this here as a callback, otherwise,
 					// the content isn't ready when all the events are bound
 					// by the script
