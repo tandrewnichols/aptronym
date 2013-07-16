@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div id="main-inner">
+<div id="main-inner" data-scripts="{{ scripts|join(',') }}">
 	<div class="container">
 		<div class="row">
 			<div class="offset3 span6">
@@ -20,7 +20,7 @@
 						<tr>
 							<td>{{ emp.name }}</td>
 							<td>{{ emp.job }}</td>
-							<td><a class="btn btn-primary" href="/employee/{{ emp.id }}">View/Edit</a></td>
+							<td><a class="btn btn-primary ajax-btn" href="/employee/{{ emp.id }}">View/Edit</a></td>
 						</tr>
 					{%- endfor %}
 					</tbody>
@@ -29,7 +29,7 @@
 				<div class='hero-unit'>
 					<h3>You do not have any employees listed yet.</h3>
 					<p>Get started: 
-						<a id="well-new-emp" class='btn btn-primary spaced-left' href="/add">Add an Employee</a>
+						<a id="well-new-emp" class='btn btn-primary spaced-left ajax-btn' href="/add">Add an Employee</a>
 					</p>
 				</div>
 				{% endif %}

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div id="main-inner">
+<div id="main-inner" data-scripts="{{ scripts|join(',') }}">
 	<div class="container">
 		<div class="row">
 			<div class="offset3 span6">
@@ -41,6 +41,6 @@
 {% block scripts %}
 	{% parent %}
 	{% for s in scripts %}
-	<script type="text/javascript" src="{{s}}"></script>
+	<script type="text/javascript" src="{{s}}" data-ajax="1"></script>
 	{% endfor %}
 {% endblock %}

@@ -36,12 +36,30 @@ app.post('/employee/:id', routes.edit);
 // Error handler
 app.use(function(err, req, res, next){
 	console.warn((typeof err === 'string') ? err : JSON.stringify(err, null, 4));
-	res.render('error.html', {status: 500, message: 'Officer Down!', error: err});
+	req.template = "error.html";
+	var vars = {
+		status: 500,
+		message: "Officer Down!",
+		error: err
+	};
+	if (req.xhr) {
+		var tmpl = swig.compileFile('error.html');
+		res.send(500, {template: tmpl.render(vars), swig: vars});
+	} else {
+		res.render('error.html', vars);
+	}
 });
 
-// Catch all 404 handler
-app.use(function(req, res, next){
-	res.render('error.html', {status: 404, message: "That's a negative, commander."});
+// Global middleware for determining the type of response to send
+app.use(function(req, res, next) {
+	var template = req.template || 'error.html';
+	var vars = req.swig || {status: 404, message: "That's a negative commander"};
+	if (req.xhr) {
+		var tmpl = swig.compileFile(template);
+		res.send(200, {template: tmpl.render(vars), swig: vars});
+	} else {
+		res.render(template, vars);
+	}
 });
 
 http.createServer(app).listen(app.get('port'), function(){

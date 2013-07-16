@@ -5,11 +5,13 @@ var neo4j = require('neo4j')
 module.exports = {
 	
 	dashboard: function(req, res, next) {
-		var swig = {
+		req.swig = {
 			title: "Dashboard",
 			active: "dashboard",
+			scripts: [],
 			employees: []
 		};
+		req.template = 'dashboard.html';
 		
 		var cypher = [
 			"START n=node(*)",
@@ -21,12 +23,9 @@ module.exports = {
 			async.each(results, function(node, f){
 				var emp = node.n.data;
 				emp.id = node.n.id;
-				swig.employees.push(emp);
+				req.swig.employees.push(emp);
 				f();
-			}, function(err){
-				if (err) next(err);
-				res.render('dashboard.html', swig);
-			});
+			}, next);
 		});
 	},
 	
@@ -34,44 +33,51 @@ module.exports = {
 		var employee = db.createNode({name: req.body.name, job: req.body.job, lunchAndLearn: true});
 		employee.save(function(err, n){
 			if (err) next(err);
-			var swig = {
+			req.swig = {
 				title: "Add Employee",
 				scripts: ["/scripts/add.js"],
 				active: "add"
 			};
-			res.render('add.html', swig);
+			req.template = 'add.html';
+			next();
 		});
 	},
 	
 	add: function(req, res, next) {
-		var swig = {
+		req.swig = {
 			title: "Add Employee",
 			active: "add",
 			scripts: ["/scripts/add.js"]
 		};
-		res.render('add.html', swig);
+		req.template = 'add.html';
+		next();
 	},
 	
 	view: function(req, res, next) {
-		var swig = {
+		req.swig = {
 			title: "View Employee",
 			active: "view",
 			scripts: ["/scripts/edit.js", "/scripts/search.js"]
 		}
+		req.template = 'view.html';
 		if (req.params.id) {
 			db.getNodeById(req.params.id, function(err, node){
 				if (err) next(err);
 				var emp = node.data;
 				emp.id = node.id;
-				swig.employee = emp;
-				res.render('view.html', swig);
+				req.swig.employee = emp;
+				next();
 			});
-		} else {
-			res.render('view.html', swig);
-		}
+		} else next();
 	},
 	
 	edit: function(req, res, next) {
+		req.swig = {
+			title: "View Employee",
+			active: "view",
+			scripts: ["/scripts/edit.js", "/scripts/search.js"],
+		};
+		req.template = 'view.html';
 		db.getNodeById(req.params.id, function(err, node){
 			var data = node.data
 			data.id = node.id;
@@ -79,18 +85,10 @@ module.exports = {
 				if (req.body[prop]) data[prop] = req.body[prop];
 				node.save(function(err, n){
 					if (err) next(err);
+					req.employee = data;
 					f();
 				});
-			}, function(err){
-				if (err) next(err);
-				var swig = {
-					title: "View Employee",
-					active: "view",
-					scripts: ["/scripts/edit.js", "/scripts/search.js"],
-					employee: data
-				};
-				res.render('view.html', swig);
-			});
+			}, next);
 		});
 	},
 	

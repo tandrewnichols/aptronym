@@ -1,21 +1,26 @@
-$(function(){
-	var emps = {};
-	// Initialize typeaheads for authors and other keys
-	$("#search").typeahead({
-		source: function(query, process){
-			$.getJSON('/query/' + query, function(data){
-				console.warn(data);
-				_.each(data, function(element, index, list){
-					emps[data[index].name] = element;
+(function($, aptronym, undefined){
+	$(function(){
+		var emps = {};
+		// Initialize typeaheads for authors and other keys
+		$("#search").typeahead({
+			source: function(query, process){
+				$.getJSON('/query/' + query, function(data){
+					console.warn(data);
+					_.each(data, function(element, index, list){
+						emps[data[index].name] = element;
+					});
+					process(_.pluck(data, 'name'));
 				});
-				process(_.pluck(data, 'name'));
-			});
-		}
+			}
+		});
+		
+		$("#btn-go").click(function(e){
+			e.preventDefault();
+			var val = $("#search").val();
+			if (emps[val]) {
+				var url = '/employee/' + emps[val].id;
+				aptronym.ajaxRequest(url, 'GET');
+			}
+		});
 	});
-	
-	$("#btn-go").click(function(e){
-		e.preventDefault();
-		var val = $("#search").val();
-		if (emps[val]) window.location.href = '/employee/' + emps[val].id;
-	});
-});
+})(jQuery, (window.aptronym = window.aptronym || {} ));
