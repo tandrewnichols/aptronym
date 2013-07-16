@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div id="main-inner">
+	<div class='well'>
+		<h1>{{ status }}</h1>
+		<h3>{{ message }}</h3>
+		{% if error %}
+		<p>{{ error }}</p>
+		{% endif %}
+		<a href='/' class='btn btn-primary'>Home</a>
+	</div>
+</div>
+{% endblock %}

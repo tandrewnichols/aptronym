@@ -36,12 +36,12 @@ app.post('/employee/:id', routes.edit);
 // Error handler
 app.use(function(err, req, res, next){
 	console.warn((typeof err === 'string') ? err : JSON.stringify(err, null, 4));
-	res.render('error/500.html', {error: err});
+	res.render('error.html', {status: 500, message: 'Officer Down!', error: err});
 });
 
 // Catch all 404 handler
 app.use(function(req, res, next){
-	res.render('error/404.html', {});
+	res.render('error.html', {status: 404, message: "That's a negative, commander."});
 });
 
 http.createServer(app).listen(app.get('port'), function(){
