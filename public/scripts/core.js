@@ -34,10 +34,14 @@
 		 */
 		$(window).bind('statechange', function(e){
 			var dir = 'left';
+			var reverse = 'right';
 			var data = History.getState().data;
-			if (data.id < current) dir = 'right';
+			if (data.id < current) {
+				dir = 'right';
+				reverse = 'left';
+			}
 			current = data.id;
-			render(data, {direction: dir});
+			render(data, {direction: dir}, {direction: reverse});
 		});
 		
 		/*
@@ -78,9 +82,9 @@
 		/*
 		 * Render a template returned by the server.
 		 */
-		var render = aptronym.render = function (data, opts) {
+		var render = aptronym.render = function (data, hide, show) {
 			// First, hide the existing template
-			$('#main-inner').hide('explode', {}, 1000, function(){
+			$('#main-inner').hide('slide', hide, 500, function(){
 				// jQueryify the new template
 				var template = $(data.template);
 				// Find the content we want to display. Sometimes the entirety of the template
@@ -91,7 +95,7 @@
 				// Remove the existing template
 				$('#main').empty().append(inner);
 				// Fade in the new template
-				$("#main-inner").show('explode', {}, 600, function(){
+				$("#main-inner").show('slide', show, 500, function(){
 					// Important to do this here as a callback, otherwise,
 					// the content isn't ready when all the events are bound
 					// by the script
