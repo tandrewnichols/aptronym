@@ -20,13 +20,6 @@ app.configure(function(){
 	app.use(express.bodyParser({keepExtensions: true, uploadDir: '/var/tmp'}));
 	app.use(express.methodOverride());
 	app.use(express['static'](path.join(__dirname, 'public')));
-	
-	// Error handler
-	app.use(function(err, req, res, next){
-		console.warn((typeof err === 'string') ? err : JSON.stringify(err, null, 4));
-		if (req.xhr) res.send(500, {error: err});
-		else res.render('error/500', {error: err});
-	});
 });
 
 // Routing Vars
@@ -39,6 +32,17 @@ app.get('/employee/:id', routes.view);
 app.get('/employee', routes.view);
 app.get('/query/:name', routes.query);
 app.post('/employee/:id', routes.edit);
+
+// Error handler
+app.use(function(err, req, res, next){
+	console.warn((typeof err === 'string') ? err : JSON.stringify(err, null, 4));
+	res.render('error/500.html', {error: err});
+});
+
+// Catch all 404 handler
+app.use(function(req, res, next){
+	res.render('error/404.html', {});
+});
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.warn('Listening on port ' + app.get('port'));
