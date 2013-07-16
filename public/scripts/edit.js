@@ -7,5 +7,12 @@
 			});
 			$("#name").focus();
 		});
+		
+		$("#new-emp-form").on('xhr-complete', function(e, data){
+			$.each(["name", "job"], function(i, k){
+				$("#" + k).attr("data-orig", data[k]);
+			});
+			$("#name").focus();
+		});
 	});
 })(jQuery, (window.aptronym = window.aptronym || {}));

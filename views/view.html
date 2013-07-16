@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="offset3 span6">
 				{% if employee %}
-				<form class="form-horizontal" id="new-emp-form" method="POST" action="/employee/{{ employee.id }}" enctype="multipart/form-data">
+				<form class="form-horizontal ajax-form" id="new-emp-form" method="POST" action="/employee/{{ employee.id }}" enctype="multipart/form-data">
 					<fieldset>
 						<legend>Edit Employee</legend>
 						<div class="control-group">

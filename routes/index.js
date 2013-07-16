@@ -33,13 +33,7 @@ module.exports = {
 		var employee = db.createNode({name: req.body.name, job: req.body.job, lunchAndLearn: true});
 		employee.save(function(err, n){
 			if (err) next(err);
-			req.swig = {
-				title: "Add Employee",
-				scripts: ["/scripts/add.js"],
-				active: "add"
-			};
-			req.template = 'add.html';
-			next();
+			res.send(200, {success: 1, employee: n.data});
 		});
 	},
 	
@@ -72,23 +66,18 @@ module.exports = {
 	},
 	
 	edit: function(req, res, next) {
-		req.swig = {
-			title: "View Employee",
-			active: "view",
-			scripts: ["/scripts/edit.js", "/scripts/search.js"],
-		};
-		req.template = 'view.html';
 		db.getNodeById(req.params.id, function(err, node){
-			var data = node.data
-			data.id = node.id;
-			async.each(Object.keys(data), function(prop, f){
-				if (req.body[prop]) data[prop] = req.body[prop];
+			if (err) next(err);
+			async.each(Object.keys(node.data), function(prop, f){
+				if (req.body[prop]) node.data[prop] = req.body[prop];
 				node.save(function(err, n){
 					if (err) next(err);
-					req.employee = data;
 					f();
 				});
-			}, next);
+			}, function(err){
+				if (err) next(err);
+				res.send(200, {name: node.data.name, job: node.data.job, id: node.id, success: 1});
+			});
 		});
 	},
 	

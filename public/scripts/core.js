@@ -116,42 +116,62 @@
 		 * Some browsers can't handle files via ajax, so in those cases, we'll just
 		 * submit the form (or a pending deferred form) per normal.
 		 */
-		// $(document).on('submit', '.ajax-form', function(e){
-			// // If we can, submit the form through ajax; otherwise, let it submit normally
-			// if (window.FormData) {
-				// e.preventDefault();
-				// var valid = true;
-				// $.each($(this).find('input, textarea, select'), function(i, k){
-					// if ($(k).attr('data-required') && !$(k).val()) {
-						// valid = false;
-						// $(k).attr('placeholder', 'Required').css('border-color', 'red');
-					// }
-				// });
-				// if (valid) xhrRequest($(this));
-			// }
-		// });
+		$(document).on('submit', '.ajax-form', function(e){
+			// If we can, submit the form through ajax; otherwise, let it submit normally
+			if (window.FormData) {
+				e.preventDefault();
+				xhrRequest($(this));
+			}
+		});
 		
 		/*
 		 * Generalized handler for xhr requests
 		 */
-		// var xhrRequest = tilde.xhrRequest = function (form, opts) {
-			// if (!form) return;
-			// var defaults = {
-				// method: 'POST',
-				// async: true,
-				// action: form.attr('action'),
-				// callback: function(data) {
-					// form.trigger("xhr-complete", data);
-				// }
-			// };
-			// opts = $.extend(defaults, opts);
-			// var data = new FormData(form[0]);
-			// var xhr = new XMLHttpRequest();
-			// xhr.open(opts.method, opts.action, opts.async);
-			// xhr.send(data);
-			// xhr.onreadystatechange = function() {
-				// if (xhr.readyState === 4) opts.callback(JSON.parse(xhr.responseText));
-			// }
-		// }
+		var xhrRequest = aptronym.xhrRequest = function (form, opts) {
+			if (!form) return;
+			var defaults = {
+				method: 'POST',
+				async: true,
+				action: form.attr('action'),
+				callback: function(data) {
+					var content, alert;
+					if (data.success) {
+						content = "Data was successfully uploaded to the server.";
+						alert = "alert-info";
+					} else {
+						content = "Office down! " + data.error;
+						alert = "alert-danger";
+					}
+					
+					var info = $("<div />", {
+						id: "upload-complete",
+						"class": "alert " + alert,
+					}).append($("<button />", {
+						type: "button",
+						"class": "close",
+						"data-dismiss": "alert",
+						html: "&times;"
+					})).append(content).insertBefore(form)
+					setTimeout(function(){
+						$("#upload-complete").fadeOut('slow', function(){
+							$("#upload-complete").remove();
+						});
+					}, 3000);
+					
+					var reset = form.find("#btn-reset");
+					if (reset.length) reset.click();
+					$(window).scrollTop(0);
+					form.trigger('xhr-complete', data);
+				}
+			};
+			var options = $.extend({}, defaults, opts);
+			var data = new FormData(form[0]);
+			var xhr = new XMLHttpRequest();
+			xhr.open(options.method, options.action, options.async);
+			xhr.send(data);
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4) options.callback(JSON.parse(xhr.responseText));
+			}
+		}
 	});
 })(jQuery, (window.aptronym = window.aptronym || {} ));
