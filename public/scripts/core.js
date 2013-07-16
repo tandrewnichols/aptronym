@@ -80,7 +80,7 @@
 		 */
 		var render = aptronym.render = function (data, opts) {
 			// First, hide the existing template
-			$('#main-inner').hide('drop', opts, 'slow', function(){
+			$('#main-inner').hide('blind', opts, 1000, function(){
 				// jQueryify the new template
 				var template = $(data.template);
 				// Find the content we want to display. Sometimes the entirety of the template
