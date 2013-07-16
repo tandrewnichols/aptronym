@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div id="main-inner">
+	<div class="container">
+		<div class="row">
+			<div class="offset3 span6">
+				{% if employee %}
+				<form class="form-horizontal" id="new-emp-form" method="POST" action="/employee/{{ employee.id }}" enctype="multipart/form-data">
+					<fieldset>
+						<legend>Edit Employee</legend>
+						<div class="control-group">
+							<label class="control-label" for="name">Name</label>
+							<div class="controls">
+								<input class="span3" name="name" type="text" id="name" value="{{ employee.name }}" data-orig="{{ employee.name }}" autofocus>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="job">Job</label>
+							<div class="controls">
+								<input class="span3" name="job" type="text" id="job" value="{{ employee.job }}" data-orig="{{ employee.job }}">
+							</div>
+						</div>
+						<div class="offset2">
+							<button id="btn-submit" type="submit" class="btn btn-primary">Update</button>
+							<button id="btn-revert" type="button" class="btn">Revert</button>
+						</div>
+					</fieldset>
+				</form>
+				{% else %}
+				<input class="span6" type="text" id="search" placeholder="Search Employees" autofocus>
+				<a id="btn-go" href="#" class="btn btn-primary">View</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+	{% parent %}
+	{% for s in scripts %}
+	<script type="text/javascript" src="{{s}}"></script>
+	{% endfor %}
+{% endblock %}

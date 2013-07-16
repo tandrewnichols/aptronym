@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div id="main-inner">
+	<div class="container">
+		<div class="row">
+			<div class="offset3 span6">
+				{% if employees|length > 0 %}
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Job</th>
+							<th>View/Edit</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for emp in employees -%}
+						<tr>
+							<td>{{ emp.name }}</td>
+							<td>{{ emp.job }}</td>
+							<td><a class="btn btn-primary" href="/employee/{{ emp.id }}">View/Edit</a></td>
+						</tr>
+					{%- endfor %}
+					</tbody>
+				</table>
+				{% else %}
+				<div class='hero-unit'>
+					<h3>You do not have any employees listed yet.</h3>
+					<p>Get started: 
+						<a id="well-new-emp" class='btn btn-primary spaced-left' href="/add">Add an Employee</a>
+					</p>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

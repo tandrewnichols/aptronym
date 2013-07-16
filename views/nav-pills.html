@@ -1,0 +1,14 @@
+<div id="top-nav">
+	<ul class="nav nav-pills pull-right">
+		<li id="nav-dashboard"{% if active === "dashboard" %} class="active"{% endif %}>
+			<a href="/">Dashboard</a>
+		</li>
+		<li id="nav-add"{% if active === "add" %} class="active"{% endif %}>
+			<a href="/add">Add Employee</a>
+		</li>
+		<li id="nav-view"{% if active === "view" %} class="active"{% endif %}>
+			<a href="/employee">View/Edit Employee</a>
+		</li>
+	</ul>
+</div>
+<div class="clearfix"></div>

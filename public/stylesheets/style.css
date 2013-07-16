@@ -1,0 +1,23 @@
+.spaced-left {
+	margin-left: 5px;
+}
+
+.border-rounded {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.spaced-top {
+	margin-top: 20px;
+}
+
+.label-holder {
+	margin-top: 10px;
+}
+
+.label-holder .label {
+	margin-right: 5px;
+}
+
+

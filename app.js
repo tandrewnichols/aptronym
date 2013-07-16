@@ -8,8 +8,7 @@ var express = require('express')
 
 swig.init({ 
 	root: path.join(__dirname, 'views'),
-	allowErrors: true,
-	filters: require(path.join(__dirname, 'lib/filters.js'))
+	allowErrors: true
 });
 
 app.configure(function(){
@@ -37,19 +36,9 @@ app.get('/', routes.dashboard);
 app.get('/add', routes.add);
 app.post('/add', routes.create);
 app.get('/employee/:id', routes.view);
-
-// Global middleware for determining the type of response to send
-app.use(function(req, res, next) {
-	var template = req.template || 'error/404';
-	var vars = req.vars || {};
-	if (req.xhr) {
-		var template = __dirname + '/views/' + template + '.html';
-		var tmpl = swig.compileFile(template);
-		res.send(200, {template: tmpl.render(vars), vars: vars});
-	} else {
-		res.render(template, vars);
-	}
-});
+app.get('/employee', routes.view);
+app.get('/query/:name', routes.query);
+app.post('/employee/:id', routes.edit);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.warn('Listening on port ' + app.get('port'));

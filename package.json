@@ -11,6 +11,6 @@
 		"neo4j": "0.2.x",
 		"swig": "0.13.x",
 		"consolidate": "0.9.x",
-		"async": "0.2.x",
+		"async": "0.2.x"
 	}
 }

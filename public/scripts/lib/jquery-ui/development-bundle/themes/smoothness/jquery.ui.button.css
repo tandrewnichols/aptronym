@@ -1,0 +1,114 @@
+/*!
+ * jQuery UI Button 1.10.2
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Button#theming
+ */
+.jquery-ui .ui-button {
+	display: inline-block;
+	position: relative;
+	padding: 0;
+	line-height: normal;
+	margin-right: .1em;
+	cursor: pointer;
+	vertical-align: middle;
+	text-align: center;
+	overflow: visible; /* removes extra width in IE */
+}
+.jquery-ui .ui-button,
+.jquery-ui .ui-button:link,
+.jquery-ui .ui-button:visited,
+.jquery-ui .ui-button:hover,
+.jquery-ui .ui-button:active {
+	text-decoration: none;
+}
+/* to make room for the icon, a width needs to be set here */
+.jquery-ui .ui-button-icon-only {
+	width: 2.2em;
+}
+/* button elements seem to need a little more width */
+button.jquery-ui .ui-button-icon-only {
+	width: 2.4em;
+}
+.jquery-ui .ui-button-icons-only {
+	width: 3.4em;
+}
+button.jquery-ui .ui-button-icons-only {
+	width: 3.7em;
+}
+
+/* button text element */
+.jquery-ui .ui-button .ui-button-text {
+	display: block;
+	line-height: normal;
+}
+.jquery-ui .ui-button-text-only .ui-button-text {
+	padding: .4em 1em;
+}
+.jquery-ui .ui-button-icon-only .ui-button-text,
+.jquery-ui .ui-button-icons-only .ui-button-text {
+	padding: .4em;
+	text-indent: -9999999px;
+}
+.jquery-ui .ui-button-text-icon-primary .ui-button-text,
+.jquery-ui .ui-button-text-icons .ui-button-text {
+	padding: .4em 1em .4em 2.1em;
+}
+.jquery-ui .ui-button-text-icon-secondary .ui-button-text,
+.jquery-ui .ui-button-text-icons .ui-button-text {
+	padding: .4em 2.1em .4em 1em;
+}
+.jquery-ui .ui-button-text-icons .ui-button-text {
+	padding-left: 2.1em;
+	padding-right: 2.1em;
+}
+/* no icon support for input elements, provide padding by default */
+input.jquery-ui .ui-button {
+	padding: .4em 1em;
+}
+
+/* button icon element(s) */
+.jquery-ui .ui-button-icon-only .ui-icon,
+.jquery-ui .ui-button-text-icon-primary .ui-icon,
+.jquery-ui .ui-button-text-icon-secondary .ui-icon,
+.jquery-ui .ui-button-text-icons .ui-icon,
+.jquery-ui .ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+}
+.jquery-ui .ui-button-icon-only .ui-icon {
+	left: 50%;
+	margin-left: -8px;
+}
+.jquery-ui .ui-button-text-icon-primary .ui-button-icon-primary,
+.jquery-ui .ui-button-text-icons .ui-button-icon-primary,
+.jquery-ui .ui-button-icons-only .ui-button-icon-primary {
+	left: .5em;
+}
+.jquery-ui .ui-button-text-icon-secondary .ui-button-icon-secondary,
+.jquery-ui .ui-button-text-icons .ui-button-icon-secondary,
+.jquery-ui .ui-button-icons-only .ui-button-icon-secondary {
+	right: .5em;
+}
+
+/* button sets */
+.jquery-ui .ui-buttonset {
+	margin-right: 7px;
+}
+.jquery-ui .ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em;
+}
+
+/* workarounds */
+/* reset extra padding in Firefox, see h5bp.com/l */
+input.jquery-ui .ui-button::-moz-focus-inner,
+button.jquery-ui .ui-button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
