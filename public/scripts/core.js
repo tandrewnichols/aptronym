@@ -13,6 +13,24 @@
 	
 	$(function(){
 		
+		$("#btn-back").click(function(e){
+			e.preventDefault();
+			History.back();
+		});
+		
+		$("#btn-forward").click(function(e){
+			e.preventDefault();
+			if (current < highest) History.forward();
+		});
+		
+		$("#btn-goto").hover(function(){
+			$(this).css("cursor", "pointer");
+		}, function(){
+			$(this).css("cursor", "auto");
+		}).click(function(e){
+			e.preventDefault();
+			History.go($("#go-to").val());
+		})
 		/*
 		 * Push initial state to history. This is important to ensure that the back
 		 * button transitions content in the correct direction. This does NOT trigger

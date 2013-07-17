@@ -1,4 +1,18 @@
 <div id="top-nav">
+	<ul class="nav nav-pills pull-left space-left">
+		<li>
+			<a id="btn-back" href="#">Back</a>
+		</li>
+		<li>
+			<a id="btn-forward" href="#">Forward</a>
+		</li>
+		<li>
+			<div class="input-append">
+				<input class="pull-left" type="text" placeholder="Go back or forward X" id="go-to">
+				<span id="btn-goto" class="add-on">Go</span>
+			</div>
+		</li>
+	</ul>
 	<ul class="nav nav-pills pull-right">
 		<li id="nav-dashboard"{% if active === "dashboard" %} class="active"{% endif %}>
 			<a class="ajax-btn" href="/">Dashboard</a>
