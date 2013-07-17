@@ -3,7 +3,8 @@
 	// Setup vars
 	var History = window.History,
 		current = 0,
-		highest = 0;
+		highest = 0
+		aptronym.changeState = true;;
 	
 	// Make sure the browser is compatible with History API	
 	if (!History.enabled) {
@@ -11,7 +12,7 @@
 	}
 	
 	$(function(){
-
+		
 		/*
 		 * Push initial state to history. This is important to ensure that the back
 		 * button transitions content in the correct direction. This does NOT trigger
@@ -33,6 +34,10 @@
 		 * based on the history id, when loading 'new' pages. 
 		 */
 		$(window).bind('statechange', function(e){
+			if (!aptronym.changeState) {
+				aptronym.changeState = true;
+				return;
+			}
 			var dir = 'left';
 			var reverse = 'right';
 			var data = History.getState().data;
@@ -90,6 +95,9 @@
 				// Find the content we want to display. Sometimes the entirety of the template
 				// is the #main-inner div, but if it's not, we select only that
 				var inner = template.attr('id') == "main-inner" ? template : template.find("#main-inner");
+				
+				var upload = inner.find("#upload-complete");
+				if (upload.length) upload.remove();
 				// Hide that div so we can transition it in
 				inner.hide();
 				// Remove the existing template
